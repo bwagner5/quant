@@ -45,8 +45,8 @@ Debian / Ubuntu:
 ```
 [[ `uname -m` == "aarch64" ]] && ARCH="arm64" || ARCH="amd64"
 OS=`uname | tr '[:upper:]' '[:lower:]'`
-wget https://github.com/bwagner5/quant/releases/download/v0.0.4/quant_0.0.4_${OS}_${ARCH}.deb
-dpkg --install quant_0.0.4_linux_amd64.deb
+wget https://github.com/bwagner5/quant/releases/download/v0.0.6/quant_0.0.6_${OS}_${ARCH}.deb
+dpkg --install quant_0.0.6_linux_amd64.deb
 quant --help
 ```
 
@@ -55,7 +55,7 @@ RedHat:
 ```
 [[ `uname -m` == "aarch64" ]] && ARCH="arm64" || ARCH="amd64"
 OS=`uname | tr '[:upper:]' '[:lower:]'`
-rpm -i https://github.com/bwagner5/quant/releases/download/v0.0.4/quant_0.0.4_${OS}_${ARCH}.rpm
+rpm -i https://github.com/bwagner5/quant/releases/download/v0.0.6/quant_0.0.6_${OS}_${ARCH}.rpm
 ```
 
 Download Binary Directly:
@@ -63,6 +63,6 @@ Download Binary Directly:
 ```
 [[ `uname -m` == "aarch64" ]] && ARCH="arm64" || ARCH="amd64"
 OS=`uname | tr '[:upper:]' '[:lower:]'`
-wget -qO- https://github.com/bwagner5/quant/releases/download/v0.0.4/quant_0.0.4_${OS}_${ARCH}.tar.gz | tar xvz
+wget -qO- https://github.com/bwagner5/quant/releases/download/v0.0.6/quant_0.0.6_${OS}_${ARCH}.tar.gz | tar xvz
 chmod +x quant
 ```

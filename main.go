@@ -26,6 +26,10 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
+var (
+	version = "dev"
+)
+
 func main() {
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
@@ -38,7 +42,12 @@ func main() {
 		flag.PrintDefaults()
 	}
 	si := flag.String("si", "auto", "SI unit to use for output: binary, decimal, or auto which uses the input unit to determine the output")
+	versionFlag := flag.Bool("version", false, "display version")
 	flag.Parse()
+	if *versionFlag {
+		fmt.Println(version)
+		os.Exit(0)
+	}
 	input := strings.ReplaceAll(strings.TrimSpace(strings.Join(flag.Args(), "")), ",", "")
 	if input == "" {
 		stdin, err := io.ReadAll(os.Stdin)
