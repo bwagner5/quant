@@ -33,7 +33,10 @@ update-readme: ## Updates readme to refer to latest release
 	sed -E -i.bak "s|$(shell echo ${PREV_VERSION} | tr -d 'v' | sed 's/\./\\./g')([\"_/])|$(shell echo ${VERSION} | tr -d 'v')\1|g" README.md
 	rm -f *.bak
 
+toolchain:
+	hack/toolchain.sh
+
 help: ## Display help
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_0-9-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
-.PHONY: all build test verify help licenses fmt version update-readme
+.PHONY: all build test verify help licenses fmt version update-readme toolchain

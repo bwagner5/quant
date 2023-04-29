@@ -27,6 +27,7 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
           check-latest: true
+      - run: make toolchain verify
       - 
         run: echo ${{ secrets.MY_GITHUB_TOKEN }} | docker login ghcr.io -u bwagner5 --password-stdin
       -
