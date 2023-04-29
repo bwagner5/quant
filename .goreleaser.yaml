@@ -1,0 +1,53 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - main: ./main.go
+    env:
+      - CGO_ENABLED=0
+    targets:
+      - linux_amd64
+      - linux_arm64
+      - darwin_arm64
+      - darwin_amd64
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "{{ incpatch .Version }}-snapshot"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+nfpms:
+  - maintainer: Brandon Wagner
+    description: |-
+      an SI numeric conversion and display tool
+    license: MIT
+    formats:
+      - deb
+      - rpm
+brews:
+  -
+    tap:
+      owner: bwagner5
+      name: homebrew-wagner
+    caveats: "quant 1024Ki"
+    homepage: "https://github.com/bwagner5/quant"
+    description: "an SI numeric conversion and display tool"
+    license: "MIT"
+    test: |
+      system "#{bin}/quant --help"
+dockers:
+  -
+    image_templates:
+    - "ghcr.io/bwagner5/quant:latest"
+    - "ghcr.io/bwagner5/quant:{{ .Tag }}"
+    build_flag_templates:
+    - "--pull"
+    - "--label=org.opencontainers.image.created={{.Date}}"
+    - "--label=org.opencontainers.image.title={{.ProjectName}}"
+    - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+    - "--label=org.opencontainers.image.version={{.Version}}"
+    - "--label=org.opencontainers.image.source=https://github.com/bwagner5/quant"
