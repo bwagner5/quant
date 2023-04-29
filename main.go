@@ -1,3 +1,17 @@
+/*
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package main
 
 import (
@@ -58,9 +72,9 @@ func LargestUnit(quantity resource.Quantity) string {
 			break
 		}
 	} else {
-		var bytez resource.Scale = 0
+		var bytez resource.Scale
 		for _, scale := range []resource.Scale{resource.Exa, resource.Peta, resource.Tera, resource.Giga, resource.Mega, resource.Kilo, bytez, resource.Milli} {
-			scaledValue := quantity.AsApproximateFloat64() / math.Pow(10, float64(scale))
+			scaledValue = quantity.AsApproximateFloat64() / math.Pow(10, float64(scale))
 			if scaledValue < 1 {
 				continue
 			}
@@ -68,7 +82,7 @@ func LargestUnit(quantity resource.Quantity) string {
 			break
 		}
 	}
-	return fmt.Sprintf("%s%s", formatFloat(scaledValue), GetUnit(quantity, int(largestScale)))
+	return fmt.Sprintf("%s%s", formatFloat(scaledValue), GetUnit(quantity, largestScale))
 }
 
 func GetUnit(quantity resource.Quantity, scale int) string {
