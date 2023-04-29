@@ -46,13 +46,16 @@ func main() {
 }
 
 func LargestUnit(quantity resource.Quantity) string {
+	var scaledValue float64
+	var largestScale int
 	if quantity.Format == resource.BinarySI {
 		for _, scale := range []int{60, 50, 40, 30, 20, 10, 0, -10} {
-			scaledValue := quantity.AsApproximateFloat64() / math.Pow(2, float64(scale))
+			scaledValue = quantity.AsApproximateFloat64() / math.Pow(2, float64(scale))
 			if scaledValue < 1 {
 				continue
 			}
-			return fmt.Sprintf("%.2f%s", scaledValue, GetUnit(quantity, scale))
+			largestScale = scale
+			break
 		}
 	} else {
 		var bytez resource.Scale = 0
@@ -61,10 +64,11 @@ func LargestUnit(quantity resource.Quantity) string {
 			if scaledValue < 1 {
 				continue
 			}
-			return fmt.Sprintf("%.2f%s", scaledValue, GetUnit(quantity, int(scale)))
+			largestScale = int(scale)
+			break
 		}
 	}
-	return ""
+	return fmt.Sprintf("%s%s", formatFloat(scaledValue), GetUnit(quantity, int(largestScale)))
 }
 
 func GetUnit(quantity resource.Quantity, scale int) string {
@@ -107,4 +111,30 @@ func GetUnit(quantity resource.Quantity, scale int) string {
 		}
 	}
 	return ""
+}
+
+func formatFloat(f float64) string {
+	s := strconv.FormatFloat(f, 'f', 5, 64)
+	parts := strings.Split(s, ".")
+	if len(parts) == 1 {
+		return s
+	}
+	reversed := reverse(parts[0])
+	withCommas := ""
+	for i, p := range reversed {
+		if i%3 == 0 && i != 0 {
+			withCommas += ","
+		}
+		withCommas += string(p)
+	}
+	s = strings.Join([]string{reverse(withCommas), parts[1]}, ".")
+	return strings.TrimRight(strings.TrimRight(s, "0"), ".")
+}
+
+func reverse(s string) string {
+	runes := []rune(s)
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
+	}
+	return string(runes)
 }
